@@ -1,0 +1,122 @@
+Laptop on your lap lab 1
+------------------------
+Goals:
+1] How to create an index
+2] How to create customized fields
+3] How to index documents
+4] Specific analyzer behaviour
+5] Simple bool (OR) query
+
+1]
+PUT boeken
+
+2]
+PUT boeken/_mapping
+{
+  "properties": {
+    "jipjanneke": {
+      "type": "text",
+      "analyzer": "standard",
+      "fields": {
+        "whitesp": {
+          "type": "text",
+          "analyzer": "whitespace"
+        }
+      }
+    }
+  }
+}
+
+3]
+PUT boeken/_doc/1
+{
+    "jipjanneke": "Takkie jankt. Hij jankt zo zielig... ‘Jeng, jeng, jeng,’ huilt Takkie."
+}
+
+PUT boeken/_doc/2
+{
+    "jipjanneke": "‘Wat is er dan?’ vraagt Jip."
+}
+
+PUT boeken/_doc/3
+{
+    "jipjanneke": "‘Heb je pijn aan je pootje?’ vraagt Janneke."
+}
+
+4]
+# top 10 documents
+GET boeken/_search
+
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-analyzer.html
+GET boeken/_search
+{
+  "query": {
+    "match": {
+      "jipjanneke": {
+        "query": "jip"
+      }
+    }
+  }
+}
+
+GET boeken/_search
+{
+  "query": {
+    "match": {
+      "jipjanneke.whitesp": {
+        "query": "Jip."
+      }
+    }
+  }
+}
+
+
+GET /boeken/_termvectors/1
+{
+  "fields": [
+    "jipjanneke"
+  ],
+  "offsets": true,
+  "payloads": true,
+  "positions": true,
+  "term_statistics": true,
+  "field_statistics": true
+}
+
+GET /boeken/_termvectors/1
+{
+  "fields": [
+    "jipjanneke.whitesp"
+  ],
+  "offsets": true,
+  "payloads": true,
+  "positions": true,
+  "term_statistics": true,
+  "field_statistics": true
+}
+
+5]
+GET boeken/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "jipjanneke": "takkie"
+          }
+        },
+        {
+          "match": {
+            "jipjanneke": "jip"
+          }
+        },
+        {
+          "match": {
+            "jipjanneke": "janneke"
+          }
+        }
+      ]
+    }
+  }
+}

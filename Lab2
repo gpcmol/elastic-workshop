@@ -1,0 +1,52 @@
+Laptop on your lap lab 2
+------------------------
+
+Earthquakes in the Netherlands
+website https://www.knmi.nl/kennis-en-datacentrum/dataset/aardbevingscatalogus
+
+List from 2016 (csv)
+http://cdn.knmi.nl/knmi/map/page/seismologie/all_induced.csv
+
+Open http://localhost:5601/app/ml/datavisualizer
+
+Import data > all_induced.csv
+
+Advanced tab; add the following as processor
+    {
+      "date" : {
+        "field" : "YYMMDD",
+        "target_field" : "timestamp",
+        "formats" : ["yyyyMMdd"],
+        "timezone" : "Europe/Amsterdam"
+      }
+    },
+
+Import
+
+Index name: earthquakes
+
+Open data visualizer
+
+Open http://localhost:5601/app/maps/
+
+Add layer > heatmap
+
+Index pattern: earthquakes
+
+Name heatmap: earthquakes
+
+Save > Title heatmap earthquakes
+
+Add to dashboard > New
+
+Save > Title > earthquakes
+
+Create visualization > select index earthquakes
+
+Bar Vertical
+
+Drag timestamp > Break down by
+
+Drag MAG > Vertical axis; change to MAX
+
+Select time frame 40 years
