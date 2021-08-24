@@ -70,6 +70,17 @@ GET boeken/_search
   }
 }
 
+POST boeken/_analyze
+{
+  "field": "jipjanneke",
+  "text": "Jip en Janneke."
+}
+
+POST boeken/_analyze
+{
+  "field": "jipjanneke.whitesp",
+  "text": "Jip en Janneke."
+}
 
 GET /boeken/_termvectors/1
 {
